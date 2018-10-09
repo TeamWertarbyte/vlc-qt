@@ -180,6 +180,14 @@ class VLCQT_QML_EXPORT VlcQmlPlayer : public VlcQmlSource
      */
     Q_PROPERTY(int videoTrack READ videoTrack WRITE setVideoTrack NOTIFY videoTrackChanged)
 
+    /*!
+        \brief VLC media options
+        \see mediaOptions
+        \see setMediaOptions
+        \see mediaOptionsChanged
+     */
+    Q_PROPERTY(QStringList mediaOptions READ mediaOptions WRITE setMediaOptions NOTIFY mediaOptionsChanged)
+
 public:
     /*!
         \brief VlcQmlPlayer constructor
@@ -449,6 +457,23 @@ public:
      */
     void setVideoTrack(int videoTrack);
 
+    /*!
+        \brief Get VLC media options
+        \return VLC media options
+
+        Used as property in QML.
+     */
+    QStringList mediaOptions() const;
+
+    /*!
+        \brief Set VLC media options
+        \param options new VLC media options
+        \note The options are applied when the playback restarts
+
+        Used as property in QML.
+     */
+    void setMediaOptions(const QStringList &options);
+
 signals:
     /*!
         \brief Autoplay changed signal
@@ -525,6 +550,11 @@ signals:
     */
     void videoTrackChanged();
 
+    /*!
+        \brief Options changed signal
+    */
+    void mediaOptionsChanged();
+
 private slots:
     void mediaParsed(bool parsed);
     void mediaPlayerVout(int count);
@@ -547,6 +577,8 @@ private:
 
     QStringList _audioPreferredLanguages;
     QStringList _subtitlePreferredLanguages;
+
+    QStringList _mediaOptions;
 };
 
 #endif // VLCQT_QMLPLAYER_H_

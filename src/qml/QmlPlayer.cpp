@@ -181,6 +181,10 @@ void VlcQmlPlayer::setUrl(const QUrl &url)
         _media = new VlcMedia(url.toString(QUrl::FullyEncoded), false, _instance);
     }
 
+    foreach(QString option, mediaOptions()) {
+        _media->setOption(option);
+    }
+
     connect(_media, static_cast<void (VlcMedia::*)(bool)>(&VlcMedia::parsedChanged), this, &VlcQmlPlayer::mediaParsed);
 
     openInternal();
@@ -285,6 +289,17 @@ void VlcQmlPlayer::setVideoTrack(int videoTrack)
 
     _player->video()->setTrack(videoTrack);
     emit videoTrackChanged();
+}
+
+QStringList VlcQmlPlayer::mediaOptions() const
+{
+    return _mediaOptions;
+}
+
+void VlcQmlPlayer::setMediaOptions(const QStringList &options)
+{
+    _mediaOptions = options;
+    emit mediaOptionsChanged();
 }
 
 void VlcQmlPlayer::mediaParsed(bool parsed)
